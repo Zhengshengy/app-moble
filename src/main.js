@@ -3,12 +3,17 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Vant from 'vant';
-import 'vant/lib/index.css'
+import {VueMasonryPlugin} from 'vue-masonry';
 import 'postcss-pxtorem'
+
+import VideoPlayer from 'vue-video-player'
+
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+// require('videojs-contrib-hls/dist/videojs-contrib-hls')
+Vue.use(VueMasonryPlugin)
+Vue.use(VideoPlayer)
 Vue.config.productionTip = false
-Vue.use(Vant);
-/* eslint-disable no-new */
 
 new Vue({
   el: '#app',

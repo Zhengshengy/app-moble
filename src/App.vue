@@ -3,7 +3,6 @@
     <app-header v-if="header_show"></app-header>
     <router-view v-on:public_header="public_header" v-on:public_footer="public_footer"></router-view>
     <app-footer v-if="footer_show"></app-footer>
-
   </div>
 </template>
 
@@ -39,15 +38,32 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-}
-*{margin:0;padding:0}
+  @import "assets/css/public.css";
+  html,body{ height: 100%;}
+  #app {
+    height: 100%;
+    font-size: 12px;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *{margin:0;padding:0}
 
-li{list-style:none}
+  li{list-style:none}
+  img{vertical-align:top;border:none}
+  a{ color: black; }
 
-img{vertical-align:top;border:none}
+  .container{ padding: 0px 15px}
+  .container-fluid{ width: 100%; margin: 0px; padding: 0px}
+  .img-fluid{ width: 100%;}
+  .img-thumb{ border-radius: 0px;}
+
+  .rounded{ border-radius: 50%}
+  .text-center{ text-align: center}
+  .text-right{ text-align: right;}
+  .column-title{ padding: 0.2rem 0rem}
+
+  .header{ line-height: 50px; font-size:0.213333rem; font-weight:500;}
+  .header .van-icon{ line-height: 50px;}
+  .header .van-col{ line-height: 50px; height: 50px;}
 </style>

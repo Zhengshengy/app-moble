@@ -1,19 +1,11 @@
 <template>
-<div>
-
+<div class="container">
 </div>
 </template>
-
 <script>
-    export default {
-        name: "Header",
-      data(){
-          return{
-
-          }
-      }
-    }
+export default {
+  name:'Index',
+}
 </script>
-
-<style scoped>
+<style>
 </style>
