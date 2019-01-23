@@ -2,8 +2,8 @@
     <div>
       <van-row type="flex" justify="space-between"  class="newactor" gutter="20">
         <van-col span="12"  v-for="(item,index) in dataTransfer" :key="index">
-          <div class="movie" @click="tovideo">
-            <img  class="img-fluid img-thumb" :src="item.src" alt="">
+          <div class="movie" @click="tovideo(item.id)">
+            <img  class="img-fluid img-thumb" :src="item.poster" alt="">
             <div style="margin-top: 5px">{{item.name}}</div>
           </div>
         </van-col>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { Col,Row,  } from 'vant';
+import { Col,Row} from 'vant';
 export default {
   name: "VideoComponent",
   components:{
@@ -24,8 +24,8 @@ export default {
       required: true
     },
   methods:{
-    tovideo(){
-      this.$router.push('/video/detail')
+    tovideo(id){
+      this.$router.push({path:'/video/detail',query:{id:id}})
     }
   }
 }

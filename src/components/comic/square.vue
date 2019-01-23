@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <van-nav-bar title="动漫详情" left-text="" left-arrow @click-left="$router.back(-1)"/>
+  <div style=" height:100%; background: #000;">
+    <van-nav-bar title="动漫详情" left-text="" left-arrow @click-left="$router.back(-1)" style="background: #000; color: #FFF;"/>
     <div class="container">
       <van-row :gutter="10" >
         <van-col span="8" v-for="(item,index) in imgList" class="mt-10" :key="index">

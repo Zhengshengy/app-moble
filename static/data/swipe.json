@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "type": "1",
+    "src": "static/img/s1.jpg",
+    "url": ""
+  },
+  {
+    "id": "2",
+    "type": "1",
+    "src": "static/img/s2.jpg",
+    "url": ""
+  },
+  {
+    "id": "3",
+    "type": "1",
+    "src": "static/img/s8.jpg",
+    "url": ""
+  },
+  {
+    "id": "1",
+    "type": "2",
+    "src": "static/img/s3.jpg",
+    "url": ""
+  },
+  {
+    "id": "2",
+    "type": "2",
+    "src": "static/img/s4.jpg",
+    "url": ""
+  },
+  {
+    "id": "1",
+    "type": "3",
+    "src": "static/img/s5.jpg",
+    "url": ""
+  },
+  {
+    "id": "2",
+    "type": "3",
+    "src": "static/img/s6.jpg",
+    "url": ""
+  },
+  {
+    "id": "3",
+    "type": "3",
+    "src": "static/img/s7.jpg",
+    "url": ""
+  }
+]

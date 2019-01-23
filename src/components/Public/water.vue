@@ -1,4 +1,3 @@
-<!-- —————————————↓SCSS———————分界线————————————————————————— -->
 <style lang="scss" scoped>
 .vue-waterfall-easy-container {
   width: 100%;

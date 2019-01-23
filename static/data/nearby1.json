@@ -1,0 +1,20 @@
+[
+  {
+    "id":"3",
+    "avatar":"static/images/avatar/3.png",
+    "username":"人走茶凉",
+    "sex":"static/img/usersex.png",
+    "grade":"无证驾驶",
+    "usertosay":"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
+    "distance":"100米以内"
+  },
+  {
+    "id":"4",
+    "avatar":"static/images/avatar/4.png",
+    "username":"人走茶凉",
+    "sex":"static/img/usersex.png",
+    "grade":"无证驾驶",
+    "usertosay":"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
+    "distance":"100米以内"
+  }
+]

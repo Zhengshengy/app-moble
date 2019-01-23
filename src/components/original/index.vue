@@ -1,5 +1,7 @@
 <template>
-<div class="container-fluid">
+  <transition name="fade">
+<div class="container-fluid" style="margin-bottom:65px">
+  <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
   <div class="container">
     <van-row class="header" type="flex" justify="space-between">
       <van-col span="3">
@@ -15,30 +17,26 @@
       </van-col>
     </van-row>
   </div>
-
-
-  <div id="content">
-    <vue-waterfall-easy :mobileGap="20" ref="waterfall" :imgsArr="imgsArr" @scrollReachBottom="getData" @click="clickFn" @imgError="imgErrorFn">
-      <div slot-scope="props">
-        <p>第{{props.index+1}}张图片</p>
-        <p>{{props.value.info}}</p>
-      </div>
-    </vue-waterfall-easy>
-  </div>
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+       <original-component :dataTransfer="blocks"></original-component>
+    </van-list>
+    </van-pull-refresh>
 </div>
+  </transition>
 </template>
 
 <script>
-import { Tab, Tabs, Icon, Row, Col } from 'vant';
-import vueWaterfallEasy from 'vue-waterfall-easy'
+import { Tab, Tabs, Icon, Row, Col,PullRefresh,Toast,List } from 'vant';
+import OriginalComponent from "../Public/OriginalComponent";
 import axios from 'axios'
 export default {
   name: 'app',
   data() {
     return {
-      imgsArr: [],
-      group: 0, // 当前加载的加载图片的次数
-      pullDownDistance: 0
+      blocks:[],
+      isLoading: false,
+      loading: false,
+      finished: false
     }
   },
   components: {
@@ -47,57 +45,37 @@ export default {
     [Icon.name]:Icon,
     [Row.name]:Row,
     [Col.name]:Col,
-    vueWaterfallEasy
-  },
-  methods: {
-    getData() {
-      axios.get('./static/data/data.json?group=' + this.group) // 真实环境中，后端会根据参数group返回新的图片数组，这里我用一个静态json文件模拟
-        .then(res => {
-          this.group++
-          if (this.group === 10) { // 模拟已经无新数据，显示 slot="waterfall-over"
-            this.$refs.waterfall.waterfallOver()
-            return
-          }
-          this.imgsArr = this.imgsArr.concat(res.data)
-        })
-    },
-    clickFn(event, { index, value }) {
-      // event.preventDefault()
-      if (event.target.tagName.toLowerCase() == 'img') {
-        console.log('img clicked', index, value)
-      }
-    },
-    imgErrorFn(imgItem){
-      console.log('图片加载错误',imgItem)
-    },
-    changeImgArr() {
-      axios.get('./static/data/data-change.json') // 真实环境中，后端会根据参数group返回新的图片数组，这里我用一个静态json文件模拟
-        .then(res => {
-          this.imgsArr = res.data
-        })
-    },
-    pullDownMove(pullDownDistance) {
-      // console.log('pullDownDistance', pullDownDistance)
-      this.pullDownDistance = pullDownDistance
-    },
-    pullDownEnd(pullDownDistance) {
-      console.log('pullDownEnd')
-      if(this.pullDownDistance>50){
-        alert('下拉刷新')
-      }
-      this.pullDownDistance = 0
-    },
+    [PullRefresh.name]: PullRefresh,
+    [Toast.name]: Toast,
+    [List.name]: List,
+    OriginalComponent
   },
   created(){
     this.$emit('public_header', false)
     this.$emit('public_footer', true)
-    this.getData()
-
-    // 删除某个卡片
-    // setTimeout(()=>{
-    //   this.imgsArr.splice(1,1)
-    // },2000)
+    axios.get('static/data/original.json').then(e=>{
+      this.blocks = e.data
+    })
   },
+  methods:{
+    onRefresh() {
+      setTimeout(() => {
+        this.$toast('刷新成功');
+        this.isLoading = false;
+        }, 500);
+     },
+    onLoad() {
+      setTimeout(() => {
+        axios.get('static/data/original1.json').then(e=>{
+          e.data.forEach(item=>{
+            this.blocks.push(item)
+          })
+         })
+          this.loading = false;
+          this.finished = true;
+      }, 2000);
+    }
+  }
 }
 </script>
 

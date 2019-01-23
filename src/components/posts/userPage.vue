@@ -1,23 +1,30 @@
 <!--//用户主页-->
 <template>
+  <transition name="fade">
   <div class="container-fluid">
     <van-nav-bar title="用户主页" left-arrow @click-left="$router.back(-1)" :border="false"/>
     <div class="container">
       <van-row>
         <van-col span="6" offset="9" >
-          <img class="img-fluid rounded" src="../../../static/images/avatar/1.png" alt="">
+          <img class="img-fluid rounded" :src="user.avatar" alt="">
         </van-col>
         <van-col span="12" offset="6" class="text-center my-10">
-          小凤仙
-          <img src="../../../static/img/usersex.png" alt="">
-          <span class="bg-yellow">无证驾驶</span>
+          {{user.name}}
+          <img src="../../assets/img/usersex.png" alt="" v-if="user.sex==1">
+
+          <van-tag round type="success">{{grade}}</van-tag>
         </van-col>
         <van-col span="12" offset="6" class="text-center">
-          这家伙很懒，什么也没留下
+          {{signature}}
         </van-col>
         <van-col span="12" offset="6" class="text-center my-20">
-          <van-button size="small" round type="danger">关注</van-button>
-          <van-button size="small" round type="danger">发消息</van-button>
+          <div v-if="follow==false">
+            <van-button size="small" round type="danger" @click="changeFollow">关注</van-button>
+          </div>
+          <div v-else>
+            <van-button round size="small" type="default" @click="changeFollow">已关注</van-button>
+          </div>
+
         </van-col>
       </van-row>
     </div>
@@ -33,13 +40,14 @@
       </van-tab>
     </van-tabs>
   </div>
+  </transition>
 </template>
 
 <script>
-import { NavBar,Col,Row,Icon,Tab, Tabs,Button } from 'vant';
+import { NavBar, Col, Row, Icon, Tab, Tabs, Button, Tag } from 'vant';
 import PostComponent from "../Public/PostComponent";
 import OriginalComponent from "../Public/OriginalComponent";
-
+import axios from 'axios'
 export default {
   name:'userpage',
   components:{
@@ -51,7 +59,8 @@ export default {
     [Icon.name]:Icon,
     [Tab.name]:Tab,
     [Tabs.name]:Tabs,
-    [Button.name]:Button
+    [Button.name]:Button,
+    [Tag.name]: Tag
   },
   created(){
     this.$emit('public_header', false)
@@ -64,203 +73,50 @@ export default {
   data(){
     return{
       active: 0,
-      posts:[
-        {
-          id:1,
-          heard:'static/home/111.jpg',
-          pic:[
-            {img:'static/img/img2.jpg'},
-            {img:'static/img/img2.jpg'},
-            {img:'static/img/img2.jpg'}
-            ],
-          name:'赵铁柱',
-          time:'3分钟前',
-          con:'以前从来不过生日的 那个半年前说要给我过人生中第一个生日的人已经离开了，自己过得也挺好的。'
-        },
-        {
-          id:1,
-          heard:'static/home/111.jpg',
-          pic:[
-            {img:'static/img/img2.jpg'},
-            {img:'static/img/img2.jpg'},
-            {img:'static/img/img2.jpg'}
-          ],
-          name:'赵铁柱',
-          time:'3分钟前',
-          con:'以前从来不过生日的 那个半年前说要给我过人生中第一个生日的人已经离开了，自己过得也挺好的。'
-        },
-        {
-          id:1,
-          heard:'static/home/111.jpg',
-          pic:[
-            {img:'static/img/img2.jpg'},
-            {img:'static/img/img2.jpg'},
-            {img:'static/img/img2.jpg'}
-          ],
-          name:'赵铁柱',
-          time:'3分钟前',
-          con:'以前从来不过生日的 那个半年前说要给我过人生中第一个生日的人已经离开了，自己过得也挺好的。'
-        },
-        {
-          id:1,
-          heard:'static/home/111.jpg',
-          pic:[
-            {img:'static/img/img2.jpg'},
-            {img:'static/img/img2.jpg'},
-            {img:'static/img/img2.jpg'}
-          ],
-          name:'赵铁柱',
-          time:'3分钟前',
-          con:'以前从来不过生日的 那个半年前说要给我过人生中第一个生日的人已经离开了，自己过得也挺好的。'
-        }
-      ],
-      blocks: [
-        {
-          "src": "./static/images/water/1.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/1.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/2.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/2.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/3.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/3.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/4.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/4.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/5.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/5.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/6.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/6.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/7.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/7.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/8.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/8.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/9.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/9.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/10.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/10.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/11.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/11.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/12.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/12.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/13.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/13.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/14.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/14.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/15.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/15.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/16.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/16.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/17.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/17.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/18.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/18.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/19.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/19.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/20.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/20.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        }
-      ]
+      posts:[],
+      blocks: [],
+      user:{},
+      sex:'',
+      grade:'',
+      signature:'',
+      uid:'',
+      follow: false
     }
+  },
+  created(){
+    this.uid = this.$route.query.uid
+    axios.get('static/data/users.json').then(e=>{
+      this.user = e.data.filter(item=>{
+        return item.id == this.uid
+      })
+      this.user = this.user[0]
+      if (this.user.grade == '0'){
+        this.grade = '无证驾驶'
+      }
+      this.user.signature == ''? this.signature = '这家伙很懒，什么也没留下' :this.signature=this.user.signature
+    });
+
+    axios.get('static/data/posts.json').then(e=>{
+      this.posts = e.data.filter(item=>{
+        return item.user.id == this.uid
+      });
+      this.posts.forEach(value=>{
+        value.crate_time = new Date(parseInt(value.crate_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,'');
+      });
+      this.$store.state.postPraise.postsList = this.posts
+    })
+    axios.get('static/data/original.json').then(e=>{
+      this.blocks = e.data.filter(item=>{
+        return item.user.id == this.uid
+      })
+    })
   },
   methods:{
     topost(){
-      this.$router.push('/posts/detail')
+      this.$router.push({path:'/posts/detail',query:{uid:this.uid}})
+    },
+    changeFollow(){
+      this.follow = !this.follow
     }
   }
 }

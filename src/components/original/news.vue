@@ -1,6 +1,8 @@
 <template>
   <!--最新原创-->
+  <transition name="fade">
 <div class="container-fluid" style="margin-bottom:65px">
+  <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
   <div class="container">
     <van-row class="header" type="flex" justify="space-between">
       <van-col span="3">
@@ -16,160 +18,26 @@
       </van-col>
     </van-row>
   </div>
-  <original-component :dataTransfer="blocks"></original-component>
+  <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <original-component :dataTransfer="blocks"></original-component>
+  </van-list>
+    </van-pull-refresh>
 </div>
+  </transition>
 </template>
 
 <script>
-import { Tab, Tabs, Icon, Row, Col } from 'vant';
+import { Tab, Tabs, Icon, Row, Col,PullRefresh,Toast,List } from 'vant';
 import OriginalComponent from "../Public/OriginalComponent";
-
+import axios from 'axios'
 export default {
   name: 'app',
   data() {
     return {
-      blocks: [
-        {
-          "src": "./static/images/water/1.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/1.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/2.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/2.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/3.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/3.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/4.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/4.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/5.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/5.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/6.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/6.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/7.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/7.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/8.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/8.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/9.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/9.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/10.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/10.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/11.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/11.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/12.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/12.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/13.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/13.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/14.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/14.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/15.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/15.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/16.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/16.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/17.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/17.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/18.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/18.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/19.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/19.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/20.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/20.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        }
-      ]
+      blocks: [],
+      isLoading: false,
+      loading: false,
+      finished: false
     }
   },
   components: {
@@ -178,13 +46,36 @@ export default {
     [Tabs.name]:Tabs,
     [Icon.name]:Icon,
     [Row.name]:Row,
-    [Col.name]:Col
-  },
-  methods: {
+    [Col.name]:Col,
+    [PullRefresh.name]: PullRefresh,
+    [Toast.name]: Toast,
+    [List.name]: List,
   },
   created(){
     this.$emit('public_header', false)
     this.$emit('public_footer', true)
+    axios.get('static/data/original.json').then(e=>{
+      this.blocks = e.data
+    })
+  },
+  methods:{
+    onRefresh() {
+      setTimeout(() => {
+        this.$toast('刷新成功');
+        this.isLoading = false;
+        }, 500);
+     },
+    onLoad() {
+      setTimeout(() => {
+        axios.get('static/data/original1.json').then(e=>{
+          e.data.forEach(item=>{
+            this.blocks.push(item)
+          })
+         })
+          this.loading = false;
+          this.finished = true;
+      }, 2000);
+    }
   }
 }
 </script>

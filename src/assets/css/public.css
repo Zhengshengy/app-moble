@@ -54,6 +54,7 @@
 .avatar-lg {width: 160px;height: 160px;border-radius: 50%}
 
 /*图片大小*/
+.photo-10 { width:10px;height: 10px;}
 .photo-20 { width:20px;height: 20px;}
 .photo-40 {width:40px;height: 40px;}
 .photo-60 { width:60px;height: 60px;}
@@ -159,6 +160,7 @@
 .pb-25 {padding-bottom: 25px}
 .pb-30 {padding-bottom: 30px}
 .pb-35 {padding-bottom: 35px}
+.pb-50 {padding-bottom: 50px}
 .pl-0 {padding-left: 0}
 .pl-10 {padding-left: 10px}
 .pl-15 {padding-left: 15px}

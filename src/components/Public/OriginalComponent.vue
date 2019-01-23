@@ -1,15 +1,14 @@
 <template>
   <div class="masonry" v-masonry>
-    <div v-masonry-tile @click="originalDetail" class="item" v-for="(item, index) in dataTransfer" :key="index">
-      <!--block item markup -->
+    <div v-masonry-tile @click="originalDetail(item.id)" class="item" v-for="(item, index) in dataTransfer" :key="index">
       <div class="thumb img-thumb">
-        <img class="img-fluid img-thumb" :src="item.src" alt="">
+        <img class="img-fluid img-thumb" :src="item.poster" alt="">
         <van-row gutter="10" style="padding:10px;">
           <van-col span="7">
-            <img class="img-fluid rounded" :src="item.avatar" alt="">
+            <img class="img-fluid rounded" :src="item.user.avatar" alt="">
           </van-col>
           <van-col span="17">
-            <p>{{ item.name }}</p>
+            <p>{{ item.user.name }}</p>
             <span>{{item.info}}</span>
           </van-col>
         </van-row>
@@ -24,17 +23,17 @@
     name:'OriginalComponent',
     components: {
       [Row.name]:Row,
-      [Col.name]:Col
+      [Col.name]:Col,
     },
     props:{
       dataTransfer:Array,
       required: true
     },
     methods:{
-      originalDetail(){
-        this.$router.push("/original/detail")
+      originalDetail(id){
+        this.$router.push({path:"/original/detail",query:{id:id}})
       }
-    }
+    },
   }
 </script>
 

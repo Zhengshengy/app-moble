@@ -1,0 +1,18 @@
+[
+  {
+    "id":"1",
+    "iconimg":"static/images/icon/1.png",
+    "iconname":"拼多多",
+    "iconinfo":"拼多多拼多多",
+    "icondown":"下载",
+    "path":"http://www.pinduoduo.com/download.html"
+  },
+  {
+    "id":"2",
+    "iconimg":"static/images/icon/1.png",
+    "iconname":"拼多多",
+    "iconinfo":"拼多多拼多多",
+    "icondown":"下载",
+    "path":"http://www.pinduoduo.com/download.html"
+  }
+]

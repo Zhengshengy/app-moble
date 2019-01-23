@@ -8,7 +8,7 @@
         <div class="container"><PostComponent :dataTransfer="posts" /></div>
       </van-tab>
       <van-tab title="原创">
-        <original-component :blocks="blocks"></original-component>
+        <original-component :dataTransfer="blocks"></original-component>
       </van-tab>
     </van-tabs>
   </div>
@@ -18,7 +18,7 @@
 import { NavBar, Col,Row, Tab, Tabs } from 'vant';
 import PostComponent from '@/components/Public/PostComponent'
 import OriginalComponent from "../Public/OriginalComponent";
-
+import axios from 'axios'
 export default {
   components: {
     OriginalComponent,
@@ -36,152 +36,75 @@ export default {
   data(){
     return {
       active: 0,
-      posts:[{
-        id:1,heard:'static/home/111.jpg',pic:[{img:'static/img/img2.jpg'},{img:'static/img/img2.jpg'},{img:'static/img/img2.jpg'}],name:'赵铁柱',time:'3分钟前',con:'以前从来不过生日的 那个半年前说要给我过人生中第一个生日的人已经离开了，自己过得也挺好的。'
-      }],
-      blocks: [
-        {
-          "src": "./static/images/water/1.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/1.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/2.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/2.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/3.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/3.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/4.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/4.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/5.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/5.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/6.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/6.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/7.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/7.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/8.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/8.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/9.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/9.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/10.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/10.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/11.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/11.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/12.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/12.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/13.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/13.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/14.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/14.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/15.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/15.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/16.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/16.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/17.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/17.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/18.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/18.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/19.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/19.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
-        },
-        {
-          "src": "./static/images/water/20.jpg",
-          "href": "https://www.baidu.com",
-          "avatar": "./static/images/avatar/20.png",
-          "name":"爱是信仰",
-          "info": "一些图片描述文字"
+      posts:[],
+      blocks: []
+    }
+  },
+  created(){
+    let id = sessionStorage.getItem('userid')
+    if (id){
+      axios.get('static/data/posts.json').then(e=>{
+          this.posts = e.data.filter(item=>{
+            return item.user.id == id
+          })
+          this.posts.forEach(v=>{
+            v.crate_time = this.dateDiff(v.crate_time)
+          })
+      });
+      axios.get('static/data/original.json').then(e=>{
+        this.blocks = e.data.filter(item=>{
+          return item.id == id
+        })
+    })
+    }
+  },
+  methods:{
+    dateDiff(timestamp) {
+      var arrTimestamp = (timestamp + '').split('');
+      for (var start = 0; start < 13; start++) {
+        if (!arrTimestamp[start]) {
+          arrTimestamp[start] = '0';
         }
-      ]
-
+      }
+      timestamp = arrTimestamp.join('') * 1;
+      var minute = 1000 * 60;
+      var hour = minute * 60;
+      var day = hour * 24;
+      var halfamonth = day * 15;
+      var month = day * 30;
+      var now = new Date().getTime();
+      var diffValue = now - timestamp;
+      if (diffValue < 0) {
+        return '不久前';
+      }
+      var monthC = diffValue / month;
+      var weekC = diffValue / (7 * day);
+      var dayC = diffValue / day;
+      var hourC = diffValue / hour;
+      var minC = diffValue / minute;
+      var zero = function (value) {
+        if (value < 10) {
+          return '0' + value;
+        }
+        return value;
+      };
+      if (monthC > 12) {
+        return (function () {
+          var date = new Date(timestamp);
+          return date.getFullYear() + '年' + zero(date.getMonth() + 1) + '月' + zero(date.getDate()) + '日';
+        })();
+      } else if (monthC >= 1) {
+        return parseInt(monthC) + "月前";
+      } else if (weekC >= 1) {
+        return parseInt(weekC) + "周前";
+      } else if (dayC >= 1) {
+        return parseInt(dayC) + "天前";
+      } else if (hourC >= 1) {
+        return parseInt(hourC) + "小时前";
+      } else if (minC >= 1) {
+        return parseInt(minC) + "分钟前";
+      }
+      return '刚刚';
     }
   }
 }

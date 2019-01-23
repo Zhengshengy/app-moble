@@ -1,64 +1,70 @@
 <template>
+  <transition name="fade">
     <div class="container-fluid" style="margin-bottom:65px;">
       <div style="padding: 10px 15px;border-bottom: 1px solid #c8c9cc">
-          <van-row>
-          <van-col span="4">
+        <van-row>
+          <van-col span="12">
             <div>
               <van-icon name="notes-o" size="24px" />
             </div>
           </van-col>
-          <van-col span="16" style="text-align: center">
-            <div class="heardimg">
-              <img class="rounded img-fluid" src="../../../static/images/avatar/1.png" alt="">
-            </div>
-            <div v-if="show==false">
-              <h3 style="margin: 5px 0">游客</h3>
-              <div class="login" @click="login">登录</div>
-              <div style="color: #969799;margin-bottom: 10px">登录解锁更多权限</div>
-            </div>
-            <div class="cen-top" v-else-if="show==true">
-                <h3>小凤仙</h3>
-                <img src="../../../static/home/usersex.png" alt="">
-                <p>无证驾驶</p>
-                <div style="color: #969799;margin: 5px 0">这家伙很懒，什么也没留下</div>
-            </div>
-          </van-col>
-          <van-col span="4">
+          <van-col span="12">
             <div style="text-align: right">
               <van-icon name="setting-o"  size="24px" @click="setUp" />
             </div>
           </van-col>
         </van-row>
+
+        <van-row>
+          <van-col span="8" offset="8">
+            <img class="rounded img-fluid" :src="data.avatar" alt="" v-if="data.avatar">
+            <img class="rounded img-fluid" src="../../../static/images/avatar/1.png" alt="" v-else>
+          </van-col>
+          <van-col span="24" class="text-center">
+            <div v-if="show==false">
+              <div class="my-10">游客</div>
+              <div class="login" @click="login">登录</div>
+              <div class="mb-10">登录解锁更多权限</div>
+            </div>
+            <div class="cen-top" v-else-if="show==true">
+              <h3>{{data.name}}</h3>
+              <img src="../../../static/home/usersex.png" alt="">
+              <p>{{grade}}</p>
+              <div class="my-5">{{signature}}</div>
+            </div>
+          </van-col>
+
+        </van-row>
+
         <div v-if="show==false"></div>
         <div style="text-align: center;margin-top: 10px" v-else-if="show==true">
           <van-row>
-              <van-col span="6">
-                  <router-link to="/center/concern">
-                      <div style="font-size: 16px">123</div>
-                      <div style="color: #969799">关注</div>
-                  </router-link>
-              </van-col>
-              <van-col span="6">
-                <router-link to="/center/fans">
-                  <div style="font-size: 16px">123</div>
-                  <div style="color: #969799">粉丝</div>
-                </router-link>
-              </van-col>
-              <van-col span="6">
-                <router-link to="/center/integral">
-                  <div style="font-size: 16px">123</div>
-                  <div style="color: #969799">积分</div>
-                </router-link>
-              </van-col>
-              <van-col span="6">
-                <router-link to="/center/goldCOINS">
-                  <div style="font-size: 16px">123</div>
-                  <div style="color: #969799">金币</div>
-                </router-link>
-              </van-col>
+            <van-col span="6">
+              <router-link to="/center/concern">
+                <div style="font-size: 16px">{{data.concern}}</div>
+                <div style="color: #969799">关注</div>
+              </router-link>
+            </van-col>
+            <van-col span="6">
+              <router-link to="/center/fans">
+                <div style="font-size: 16px">{{data.fans}}</div>
+                <div style="color: #969799">粉丝</div>
+              </router-link>
+            </van-col>
+            <van-col span="6">
+              <router-link to="/center/integral">
+                <div style="font-size: 16px">{{data.integral}}</div>
+                <div style="color: #969799">积分</div>
+              </router-link>
+            </van-col>
+            <van-col span="6">
+              <router-link to="/center/goldCOINS">
+                <div style="font-size: 16px">{{data.virtual_coin}}</div>
+                <div style="color: #969799">金币</div>
+              </router-link>
+            </van-col>
           </van-row>
         </div>
-
       </div>
       <div style="width: 90%;margin: 20px auto">
         <van-row>
@@ -123,48 +129,59 @@
         </van-row>
       </div>
     </div>
+  </transition>
 </template>
 
 <script>
-    import { Col,Row,Icon } from 'vant';
-    export default {
-        name: "myindex",
-        components:{
-          [Col.name]:Col,
-          [Row.name]:Row,
-          [Icon.name]:Icon,
-
-        },
-        data(){
-          return{
-            show:false
+  import { Col, Row, Icon, Tag } from 'vant';
+  import axios from 'axios'
+  export default {
+    name: "index",
+    components:{
+      [Col.name]:Col,
+      [Row.name]:Row,
+      [Icon.name]:Icon,
+      [Tag.name]: Tag
+    },
+    data(){
+      return{
+        show:false,
+        data:{},
+        signature:'',
+        grade:''
+      }
+    },
+    created(){
+      this.$emit('public_header', false)
+      this.$emit('public_footer', true)
+      let id = sessionStorage.getItem('username')
+      if (id){
+        this.show = true
+        axios.get('static/data/users.json').then(e=>{
+          this.data = e.data.filter(item=>{
+            return item.account == id
+          })
+          this.data = this.data[0]
+          sessionStorage.setItem('userid',this.data.id)
+          if (this.data.grade == '0'){
+            this.grade = '无证驾驶'
           }
-        },
-        created(){
-          this.$emit('public_header', false)
-          this.$emit('public_footer', true)
-          if (sessionStorage.getItem('username')){
-            this.show = true
-          }
-        },
-        methods:{
-          login(){
-            this.$router.push('/login')
-          },
-          setUp(){
-            this.$router.push('/center/setting')
-          }
-        }
+          this.data.signature == ''? this.signature = '这家伙很懒，什么也没留下' :this.signature=this.data.signature
+        })
+      }
+    },
+    methods:{
+      login(){
+        this.$router.push('/login')
+      },
+      setUp(){
+        this.$router.push('/center/setting')
+      }
     }
+  }
 </script>
 
 <style  scoped>
-.heardimg{
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin: 0 auto;
-}
   .login{width: 80px;height: 25px;border-radius: 15px;background: #f44;color: #fff;margin: 0 auto 10px;line-height: 25px}
   .cen-top img{
     width: 14px;
@@ -179,12 +196,12 @@
     font-size: 16px;
   }
   .cen-top p{
-      display: inline-block;;
-      background: #fff200;
-      color:#000;
-      padding:0 5px;
-      font-size: 10px;
-      border-radius: 30px;
+    display: inline-block;;
+    background: #fff200;
+    color:#000;
+    padding:0 5px;
+    font-size: 10px;
+    border-radius: 30px;
 
-    }
+  }
 </style>

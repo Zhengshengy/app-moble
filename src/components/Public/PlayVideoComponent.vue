@@ -1,16 +1,14 @@
 <template>
-    <div class="container-fluid">
-      <div class="player">
-      <video-player  class="video-player vjs-custom-skin"
-                     ref="videoPlayer"
-                     :playsinline="true"
-                     :options="playerOptions"
-                     @play="onPlayerPlay($event)"
-                     @pause="onPlayerPause($event)"
-      >
-      </video-player>
-    </div>
-    </div>
+<div class="player">
+  <video-player   class="video-player vjs-custom-skin"
+                 ref="videoPlayer"
+                 :playsinline="true"
+                 :options="playerOptions"
+                 @play="onPlayerPlay($event)"
+                 @pause="onPlayerPause($event)"
+  >
+  </video-player>
+</div>
 </template>
 <script>
 import { videoPlayer } from 'vue-video-player';
@@ -29,9 +27,10 @@ export default {
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [{
           type: "video/mp4",
-          src: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" //你的视频地址（必填）
+          src: "" //你的视频地址（必填）
+          //
         }],
-        poster: "static/images/videos/1.png", //你的封面地址
+        poster: "", //你的封面地址
         width: document.documentElement.clientWidth,
         notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
        controlBar: {
@@ -40,11 +39,15 @@ export default {
          remainingTimeDisplay: false,
          fullscreenToggle: true  //全屏按钮
        }
-      }
+      },
     }
   },
   components: {
     videoPlayer
+  },
+  props:{
+    dataTransfer:Array,
+    required: true
   },
   methods: {
     onPlayerPlay(player) {
@@ -58,6 +61,10 @@ export default {
     player() {
       return this.$refs.videoPlayer.player
     }
+  },
+  created(){
+    this.playerOptions.poster = this.dataTransfer[0].poster
+    this.playerOptions.sources[0].src = this.dataTransfer[0].routesrc
   }
 }
 </script>

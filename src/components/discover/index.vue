@@ -1,4 +1,5 @@
 <template>
+  <transition name="fade">
 <div class="container-fluid" style="margin-bottom:65px;">
   <van-nav-bar title="发现" :border="false"/>
   <van-row gutter="20" class="mt-15 mb-15">
@@ -29,66 +30,21 @@
   </van-row>
 
   <div class="container">
-    <h3 class="column-title">推荐主播</h3>
+    <van-row>
+      <van-col span="12">
+        <h3 class="column-title">推荐主播</h3>
+      </van-col>
+      <van-col span="12">
+        <p class="column-title text-right" @click="goAnchorIndex">更多</p>
+      </van-col>
+    </van-row>
     <van-swipe :autoplay="3000" class="anchor">
-      <van-swipe-item>
+      <van-swipe-item v-for="(obj,index) in newAnchor" :key="index" :show-indicators="false"	>
         <van-row gutter="20">
-          <van-col span="8">
+          <van-col span="8" v-for="(item,index) in obj.item" :key="index">
             <div class="item img-thumb">
-              <img class="img-fluid rounded" src="../../../static/images/avatar/1.png" @click="linkDetail">
-              <div class="text-center name">
-                密桃小妹
-              </div>
-              <van-button round size="small">关注</van-button>
-            </div>
-          </van-col>
-          <van-col span="8">
-            <div class="item img-thumb">
-              <img class="img-fluid rounded" src="../../../static/images/avatar/2.png" @click="linkDetail">
-              <div class="text-center name">
-                心灵鸡汤
-              </div>
-              <van-button round size="small">关注</van-button>
-            </div>
-          </van-col>
-          <van-col span="8">
-            <div class="item img-thumb">
-              <img class="img-fluid rounded" src="../../../static/images/avatar/3.png" @click="linkDetail">
-              <div class="text-center name">
-                职场故事
-              </div>
-              <van-button round size="small">关注</van-button>
-            </div>
-          </van-col>
-        </van-row>
-      </van-swipe-item>
-
-      <van-swipe-item>
-        <van-row gutter="20">
-          <van-col span="8">
-            <div class="item img-thumb">
-              <img class="img-fluid rounded" src="../../../static/images/avatar/4.png" @click="linkDetail">
-              <div class="text-center name">
-                密桃小妹
-              </div>
-              <van-button round size="small">关注</van-button>
-            </div>
-          </van-col>
-          <van-col span="8">
-            <div class="item img-thumb">
-              <img class="img-fluid rounded" src="../../../static/images/avatar/5.png" @click="linkDetail">
-              <div class="text-center name">
-                心灵鸡汤
-              </div>
-              <van-button round size="small">关注</van-button>
-            </div>
-          </van-col>
-          <van-col span="8">
-            <div class="item img-thumb">
-              <img class="img-fluid rounded" src="../../../static/images/avatar/6.png" @click="linkDetail">
-              <div class="text-center name">
-                职场故事
-              </div>
+              <img class="img-fluid rounded" :src="item.avatar" @click="linkDetail(item.id)">
+              <div class="text-center name">{{item.name}}</div>
               <van-button round size="small">关注</van-button>
             </div>
           </van-col>
@@ -97,15 +53,18 @@
     </van-swipe>
 
     <h3 class="column-title">最近更新</h3>
-    <novel-component :novel="novels"></novel-component>
-
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+      <novel-component :dataTransfer="novels"></novel-component>
+    </van-list>
   </div>
 </div>
+  </transition>
 </template>
 
 <script>
-import {NavBar, Icon, Col, Row, Swipe, SwipeItem, Button } from 'vant';
+import {NavBar, Icon, Col, Row, Swipe, SwipeItem, Button,List } from 'vant';
 import NovelComponent from "../Public/NovelComponent";
+import axios from 'axios'
 
 export default {
   components:{
@@ -116,98 +75,60 @@ export default {
     [Icon.name]:Icon,
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
-    [Button.name]: Button
+    [Button.name]: Button,
+    [List.name]: List
   },
   created(){
     this.$emit('public_header', false)
-    this.$emit('public_footer', true)
+    this.$emit('public_footer', true);
+    axios.get('static/data/novel.json').then(e=>{
+      this.novels = e.data
+    })
+    axios.get('static/data/anchor.json').then(e=>{
+      this.anchor = e.data
+      this.anchorSlice(this.anchor)
+    })
   },
   methods:{
-    linkDetail(){
-      this.$router.push('/anchor/detail')
+    linkDetail(id){
+      this.$router.push({path:'/anchor/detail',query:{uid:id}})
+    },
+    goAnchorIndex(){
+      this.$router.push("/anchor")
+    },
+    anchorSlice(data){
+      for (let i=0;i<data.length;i+=3){
+        let obj = {}
+        obj.item = data.slice(i,i+3)
+        this.newAnchor.push(obj)
+      }
+    },
+    onLoad() {
+      setTimeout(() => {
+        axios.get('static/data/novel1.json').then(e=>{
+          e.data.forEach(item=>{
+            this.novels.push(item)
+          })
+        })
+        this.loading = false;
+        this.finished = true;
+      }, 2000);
     }
   },
   data(){
     return {
-      novels:[
-        {
-          pic:"../../../static/images/novel/1.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        },
-        {
-          pic:"../../../static/images/novel/2.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        },
-        {
-          pic:"../../../static/images/novel/3.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        },
-        {
-          pic:"../../../static/images/novel/4.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        },
-        {
-          pic:"../../../static/images/novel/5.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        },
-        {
-          pic:"../../../static/images/novel/6.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        },
-        {
-          pic:"../../../static/images/novel/7.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        },
-        {
-          pic:"../../../static/images/novel/8.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        },
-        {
-          pic:"../../../static/images/novel/1.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        },
-        {
-          pic:"../../../static/images/novel/2.png",
-          name:"《阴间深潭》紫禁故事",
-          intro:"电台原版小故事，带你走进故事里",
-          playnum:"3144.8万",
-          episodes:"14集"
-        }
-      ]
+      novels:[],
+      anchor:[],
+      loading: false,
+      finished: false,
+      newAnchor:[]
     }
   }
 }
 </script>
 
-<style lang="css">
+<style scoped lang="css">
 .anchor .van-col .item{ background: #EEE; text-align: center; padding: 0.2rem;}
 .anchor .van-col .item .name{ padding: 0.1rem 0rem}
-
+.container-fluid{overflow: hidden;}
 </style>

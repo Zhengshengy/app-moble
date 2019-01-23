@@ -1,12 +1,13 @@
 <template>
+  <transition name="fade">
   <div class="container-fluid">
     <van-nav-bar title="有声小说" left-arrow @click-left="$router.back(-1)"/>
-
-    <van-tabs v-model="active" :swipe-threshold="7">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+       <van-tabs v-model="active" :swipe-threshold="7">
       <van-tab title="全部">
         <!-- 两端对齐 -->
         <div class="container mt-15">
-          <album-component :dataTransfer="albums"></album-component>
+          <album-component :dataTransfer="album"></album-component>
         </div>
       </van-tab>
       <van-tab title="动物">
@@ -28,14 +29,15 @@
 
       </van-tab>
     </van-tabs>
-
+    </van-list>
   </div>
+  </transition>
 </template>
 
 <script>
-  import { NavBar, Row, Col, Icon, Tab, Tabs, } from 'vant';
+  import { NavBar, Row, Col, Icon, Tab, Tabs,List } from 'vant';
   import AlbumComponent from "../Public/AlbumComponent";
-
+  import axios from 'axios'
   export default {
     name: "novel",
     components:{
@@ -45,87 +47,37 @@
       [Col.name]:Col,
       [Icon.name]:Icon,
       [Tab.name]:Tab,
-      [Tabs.name]:Tabs
+      [Tabs.name]:Tabs,
+      [List.name]:List
     },
     created(){
       this.$emit('public_header', false)
-      this.$emit('public_footer', false)
+      this.$emit('public_footer', false);
+      axios.get('static/data/album.json').then(e=>{
+        this.album = e.data.filter(item=>{
+          return item.type_id == '1'
+        })
+      })
     },
     data(){
       return {
         active: 0,
-        albums:[
-          {
-            pic:"../../../static/images/novel/1.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          },
-          {
-            pic:"../../../static/images/novel/2.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          },
-          {
-            pic:"../../../static/images/novel/3.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          },
-          {
-            pic:"../../../static/images/novel/4.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          },
-          {
-            pic:"../../../static/images/novel/5.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          },
-          {
-            pic:"../../../static/images/novel/6.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          },
-          {
-            pic:"../../../static/images/novel/7.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          },
-          {
-            pic:"../../../static/images/novel/8.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          },
-          {
-            pic:"../../../static/images/novel/1.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          },
-          {
-            pic:"../../../static/images/novel/2.png",
-            name:"《阴间深潭》紫禁故事",
-            intro:"电台原版小故事，带你走进故事里",
-            playnum:"3144.8万",
-            episodes:"14集"
-          }
-        ]
+        album:[],
+        loading: false,
+        finished: false
+      }
+    },
+    methods:{
+      onLoad() {
+        setTimeout(() => {
+          axios.get('static/data/album1.json').then(e=>{
+            e.data.forEach(item=>{
+              this.album.push(item)
+            })
+          })
+          this.loading = false;
+          this.finished = true;
+        }, 2000);
       }
     }
   }

@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="container-fluid"  style=" height:100%; background: #000;" @click="display">
+  <div class="container-fluid" style=" height:100%; background: #000;" @click="display">
       <!--头部菜单-->
       <div class="comic-header parent">
         <div class="change">
@@ -24,7 +24,7 @@
         </div>
       </div>
       <!--轮播图-->
-      <van-swipe @change="onChange" @touchstart="start" @touchmove="move" @touchend="end">
+      <van-swipe @change="onChange" :show-indicators="false">
         <van-swipe-item>
           <img class="img-fluid" src="../../../static/images/comic/1-1.jpg" alt="">
         </van-swipe-item>
@@ -39,13 +39,13 @@
         </van-swipe-item>
       </van-swipe>
       <!--评论列表-->
-      <div class="comment-container" v-show="show1==true" @click.stop="">
+      <div class="comment-container" v-show="show1==true" @click.stop="hiddeSubmit">
         <div class="container">
           <CommentComponent :dataTransfer="comments" />
         </div>
       </div>
       <!--底部菜单-->
-      <div class="comic-footer parent" v-show="show==false">
+      <div :class="footerTheme" v-show="show==false">
         <div class="change">
           <div class="action"  style="padding-left:0.2rem">
             <div @click.stop="showSubmit">发走心评论，交知心朋友</div>
@@ -69,7 +69,7 @@
       </div>
       <!--评论发布框-->
       <div class="inputBox" v-show="show==true" @click.stop="">
-        <input type="text" v-focus placeholder="发走心评论，交知心朋友">
+        <input type="text" v-focus placeholder="发走心评论，交知心朋友" @blur="hiddeSubmit">
         <button>发布</button>
       </div>
   </div>
@@ -107,6 +107,7 @@
         value: '',
         show: false,
         show1: false,
+        footerTheme: 'comic-footer parent',
         comments:[{
         src:'static/images/avatar/1.png',name:'陈伟霆',time:'3分钟之前',con:'景色不错有机会我也去看看'
       },
@@ -128,6 +129,10 @@
       },
       showComment(){
         this.show1 = true
+        this.footerTheme = 'comic-footer parent active'
+      },
+      hiddeSubmit(){
+        this.show = false;
       },
       onChange(index) {
         this.current = index;
@@ -135,6 +140,7 @@
       display(){
         this.show = false;
         this.show1 = false
+        this.footerTheme = 'comic-footer parent'
       },
       start(e){
         this.startY = e.targetTouches[0].clientY
@@ -159,11 +165,14 @@
 .stable{width:50px;/*固定宽度*/}
 .change{flex:1;/*这里设置为占比1，填充满剩余空间*/}
 
-.custom-indicator{}
+
 .action{ background-color: #333; color:#FFF; margin: 10px; height: 18px; line-height: 18px; padding: 5px 5px; border-radius: 25px;}
-.comic-footer{width:100%;position: fixed;bottom: 0}
+.comic-footer{width:100%; position: fixed; bottom: 0}
+
+.active .action{ background: #EEE; color: #999}
 
 .inputBox{position: fixed; bottom: 0; height: 50px; width: 100%; border-top: solid 1px #EEE; background: #FFF;}
-.inputBox input{ border: none; background: #EEE; height: 30px;width: 70%; padding: 0px 10px; margin: 10px; border-radius: 15px;}
-.comment-container{position: fixed; min-height: 60%;bottom: 0;padding:20px 0px 50px 0px; background: #ffffff;overflow: auto}
+.inputBox input{ border: none; background: #EEE; height: 30px;width: 70%; padding: 0px 15px; margin: 10px; border-radius: 15px;}
+
+.comment-container{position: fixed;width:100%; min-height: 60%;bottom: 0;padding:20px 0px 50px 0px; background: #ffffff;overflow: auto}
 </style>

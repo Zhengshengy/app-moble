@@ -1,0 +1,18 @@
+[
+  {
+    "id":"3",
+    "iconimg":"static/images/icon/3.png",
+    "iconname":"抖音",
+    "iconinfo":"抖音抖音抖音",
+    "icondown":"下载",
+    "path":"http://www.pinduoduo.com/download.html"
+  },
+  {
+    "id":"4",
+    "iconimg":"static/images/icon/4.png",
+    "iconname":"抖音",
+    "iconinfo":"抖音抖音抖音",
+    "icondown":"下载",
+    "path":"http://www.pinduoduo.com/download.html"
+  }
+]

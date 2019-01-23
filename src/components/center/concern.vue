@@ -2,46 +2,19 @@
   <div class="container-fluid">
     <van-nav-bar title="我的关注" left-arrow @click-left="$router.back(-1)"/>
     <div class="container">
-      <van-tabs v-model="active" :line-width="48">
-      <van-tab title="用户">
-        <div  @click="usercenter" class="mt-15" v-for="(item,index) in users" :key="index">
-          <van-row type="flex" gutter="20" align="center">
-            <van-col span="5">
-              <img class="img-fluid rounded" :src="item.avatar" alt="">
-            </van-col>
-            <van-col span="14">
-              <div class="cen-top">
-                <h3>{{item.username}}</h3>
-                <img class="img-fluid photo-20 mx-10" :src="item.sex" alt="">
-                <p>{{item.grade}}</p>
-              </div>
-              <div class="cen-bot">
-                <p>{{item.usertosay}}</p>
-              </div>
-            </van-col>
-            <van-col span="5">
-              <van-button size="mini" round type="danger">{{item.follow}}</van-button>
-            </van-col>
-          </van-row>
-        </div>
-      </van-tab>
-      <van-tab title="主播"></van-tab>
-    </van-tabs>
+      <user-list-component :dataTransfer = "users"></user-list-component>
     </div>
   </div>
 </template>
 
 <script>
-import { NavBar,Col,Row,Button, Tab, Tabs } from 'vant';
+import { NavBar} from 'vant';
+import UserListComponent from "../Public/UserListComponent";
 export default {
   name: "concern",
   components: {
-    [NavBar.name]: NavBar,
-    [Col.name]: Col,
-    [Row.name]: Row,
-    [Button.name]:Button,
-    [Tab.name]: Tab,
-    [Tabs.name]:Tabs
+    UserListComponent,
+    [NavBar.name]: NavBar
   },
   created(){
     this.$emit('public_header', false)
@@ -57,7 +30,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
         {
           avatar:"../../../static/images/avatar/2.png",
@@ -65,7 +38,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
         {
           avatar:"../../../static/images/avatar/3.png",
@@ -73,7 +46,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
         {
           avatar:"../../../static/images/avatar/4.png",
@@ -81,7 +54,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
         {
           avatar:"../../../static/images/avatar/5.png",
@@ -89,7 +62,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
         {
           avatar:"../../../static/images/avatar/6.png",
@@ -97,7 +70,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
         {
           avatar:"../../../static/images/avatar/7.png",
@@ -105,7 +78,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
         {
           avatar:"../../../static/images/avatar/8.png",
@@ -113,7 +86,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
         {
           avatar:"../../../static/images/avatar/9.png",
@@ -121,7 +94,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
         {
           avatar:"../../../static/images/avatar/10.png",
@@ -129,7 +102,7 @@ export default {
           sex:"../../static/img/usersex.png",
           grade:"无证驾驶",
           usertosay:"所谓的天幻所谓的天幻所谓的天幻所谓的天幻",
-          follow:"取消"
+          cancel:"取消"
         },
       ]
     }

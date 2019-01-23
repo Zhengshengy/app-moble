@@ -1,28 +1,27 @@
 <template>
   <div class="posts" >
-    <div v-for="(item,index) in dataTransfer" class="mb-15" :key="index">
-        <div class="top" >
+    <div v-for="item in dataTransfer" class="mb-15" :key="item.id">
+        <div class="top" v-if="item.user">
           <van-row gutter="20">
           <van-col span="4">
-            <img src="../../../static/images/avatar/11.png" class="img-fluid rounded" @click="touserpage">
+            <img :src="item.user.avatar" class="img-fluid rounded" @click="touserpage(item.user.id)">
           </van-col>
-          <van-col span="8">
+          <van-col span="20">
             <div>
-              <div style="font-size: 14px">{{item.name}}</div>
-              <div style="color: #a3a4a7">{{item.time}}</div>
+              <div style="font-size: 14px">{{item.user.name}}</div>
+              <div style="color: #a3a4a7">{{item.crate_time}}</div>
             </div>
           </van-col>
         </van-row>
         </div>
-        <div class="con" @click="topost">
+        <div class="con" @click="topost(item.id)">
           <p class="conmain">
-            {{item.con}}
+            {{item.content}}
           </p>
           <div style="margin: 10px 0 10px">
                 <van-row gutter="10">
-              <van-col span="8" v-for="(i,index) in item.pic" :key="index">
-
-                <img class="img-fluid img-thumb" :src="i.img" alt="" >
+              <van-col span="8" v-for="(i,index) in item.images" :key="index">
+                <img class="img-fluid img-thumb" :src="i" alt="" >
               </van-col>
             </van-row>
           </div>
@@ -30,7 +29,12 @@
         <div class="bottom">
           <van-row gutter="10">
             <van-col span="8">
-                <van-icon name="star-o" size="16px" style="vertical-align: middle;float: left;margin-right: 10px"/><span style="vertical-align: middle;float: left">点赞</span>
+              <div v-if="item.praise==false" @click="praise(item.id)">
+                <van-icon name="star-o" size="16px" style="vertical-align: middle;float: left;margin-right: 10px"  /><span style="vertical-align: middle;float: left">点赞</span>
+              </div>
+              <div v-else @click="praise(item.id)">
+                <van-icon name="star" color="#ff976a" size="16px" style="vertical-align: middle;float: left;margin-right: 10px" /><span style="vertical-align: middle;float: left">已赞</span>
+              </div>
             </van-col>
             <van-col span="8">
                <van-icon name="more-o" size="16px" style="vertical-align: middle;float: left;margin-left: 20px"/><span style="vertical-align: middle;float: left;margin-left: 10px">评论</span>
@@ -39,29 +43,49 @@
           </van-row>
         </div>
       </div>
+
   </div>
 </template>
 <script>
-  import {Row, Col,Icon } from 'vant'
+  import {Row, Col,Icon,List } from 'vant'
+  import {mapState,mapGetters,mapActions} from 'vuex';
   export default {
     name:'PostComponent',
     components:{
       [Row.name]:Row,
       [Col.name]:Col,
-      [Icon.name]:Icon
+      [Icon.name]:Icon,
+      [List.name]:List,
+    },
+    data(){
+      return{
+        num:0
+      }
     },
     props:{
-      dataTransfer:Array,
-      required: true
+      dataTransfer:{
+        type: Array,
+        required: true
+      },
+      // index:{
+      //   type: Number,
+      //   required: true
+      // }
     },
     methods:{
-      topost(){
-        this.$router.push('/posts/detail')
+      ...mapActions('postPraise',[
+          'getStar'
+      ]),
+      topost(id){
+        this.$router.push({path:'/posts/detail',query:{id:id}})
       },
-      touserpage(){
-        this.$router.push('/posts/userPage')
+      touserpage(uid){
+        this.$router.push({path:'/posts/userPage',query:{uid:uid}})
+      },
+      praise(id){
+        this.$store.dispatch('postPraise/getStar',id)
       }
-    }
+    },
   }
 </script>
 <style>

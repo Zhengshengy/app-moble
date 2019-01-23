@@ -13,11 +13,8 @@
         <div class="container mt-15">
           <private-message :data-transfer="PrivateMessage"></private-message>
         </div>
-
       </van-tab>
     </van-tabs>
-
-
 
   </div>
 </template>

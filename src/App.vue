@@ -56,7 +56,7 @@ export default {
   .container{ padding: 0px 15px}
   .container-fluid{ width: 100%; margin: 0px; padding: 0px}
   .img-fluid{ width: 100%;}
-  .img-thumb{ border-radius: 0px;}
+  .img-thumb{ border-radius: 6px;}
 
   .rounded{ border-radius: 50%}
   .text-center{ text-align: center}
@@ -66,4 +66,42 @@ export default {
   .header{ line-height: 50px; font-size:0.213333rem; font-weight:500;}
   .header .van-icon{ line-height: 50px;}
   .header .van-col{ line-height: 50px; height: 50px;}
+
+  /* 可以设置不同的进入和离开动画 */
+  /* 设置持续时间和动画函数 */
+  /*
+  .fade-enter-active {
+    transition: all .4s ease-out;
+  }
+  */
+
+  /*
+  .fade-leave-active {
+    transition: all .4s ease-out;
+  }
+  */
+
+  /*
+  .fade-enter  {
+    transform: translateX(375px);
+    opacity: 0;
+  }
+  */
+
+
+
+  .fade-enter-active, .fade-leave-active {
+    transition: all .3s
+  }
+  .fade-enter, .fade-leave-active {
+    opacity: 1;
+  }
+  .fade-enter {
+    transform: translateX(100%);
+  }
+  .fade-leave-active {
+    transform: translateX(-100%);
+  }
+
+
 </style>

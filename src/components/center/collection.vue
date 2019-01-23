@@ -39,6 +39,7 @@
     },
     data(){
       return {
+        active: 0,
         posts:[{
           id:1,heard:'static/home/111.jpg',pic:[{img:'static/img/img2.jpg'},{img:'static/img/img2.jpg'},{img:'static/img/img2.jpg'}],name:'赵铁柱',time:'3分钟前',con:'以前从来不过生日的 那个半年前说要给我过人生中第一个生日的人已经离开了，自己过得也挺好的。'
         }],
